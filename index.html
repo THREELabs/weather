@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+<style>
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  text-align: center;
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #0077cc;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"]:hover {
+  background-color: #005ea6;
+}
+
+#weather {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+}
+</style>
+
+  </head>
+  <body>
+    <h1>Weather App</h1>
+    <form>
+      <input type="text" id="city" name="city" placeholder="Enter city name">
+      <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather"></div>
+   
+<script>
+const form = document.querySelector('form');
+const input = document.querySelector('#city');
+const weatherDiv = document.querySelector('#weather');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const city = input.value.trim();
+  if (city) {
+    getWeather(city);
+  }
+});
+
+async function getWeather(city) {
+  const apiKey = '1eb27fbff71bef4ea9488dfbb1f2cdf6';
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const { name, main: { temp, humidity }, weather: [ { description, icon } ] } = data;
+    const weatherHTML = `
+      <h2>${name}</h2>
+      <img src="http://openweathermap.org/img/w/${icon}.png" alt="${description}">
+      <p>${temp}°C</p>
+      <p>${description}</p>
+      <p>Humidity: ${humidity}%</p>
+    `;
+    weatherDiv.innerHTML = weatherHTML;
+  } catch (error) {
+    console.error(error);
+    weatherDiv.innerHTML = '<p>Something went wrong. Please try again later.</p>';
+  }
+}
+</script>
+
+  </body>
+</html>
+
