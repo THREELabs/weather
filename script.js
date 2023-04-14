@@ -12,7 +12,7 @@ form.addEventListener('submit', (e) => {
 });
 
 async function getWeather(city) {
-  const apiKey = '1eb27fbff71bef4ea9488dfbb1f2cdf6';
+  const apiKey = '';
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
   try {
     const response = await fetch(url);
